@@ -1,0 +1,45 @@
+[Allgemein]
+IPping = 8.8.8.8 # Ping-Ziel zur Prüfung des Hosts
+ping_main = 6 1 # sek/count
+ping_dev = 10 1 # sek/count
+benachrichtigung = telegram # Schalter für 'email' oder 'telegram'
+
+[Telegram]
+bottoken = bot:token
+master_chat_id = chat-id
+
+[E-Mail]
+email_master = 
+
+[Geräte]
+IP01 = 172.16.1.27 Gerät 1
+IP02 = 172.16.0.233 Telefonanlage
+IP03 = 172.16.2.250 DNS-Server
+IP04 = 172.16.3.17 3D-Drucker
+IP05 = 
+IP06 = 
+IP07 = 
+IP08 = 
+IP09 = 
+IP10 = 
+IP11 = 
+IP12 = 
+IP13 = 
+IP14 = 
+IP15 = 
+IP16 = 
+IP17 = 
+IP18 = 
+IP19 = 
+IP20 = 
+IP21 = 
+IP22 = 
+IP23 = 
+IP24 = 
+IP25 = 
+
+[Zeitplan]
+aktiv = 1 # Schalter: 0=nur manuell, 1=automatisch (Crontab), 2=permanent
+tage = 30 # x Tage wird eine erneute Meldung bei Daueroffline zurückgehalten
+crontab = * 6-22 * * * /srv/scripte/störungsbenachrichtigung.sh >> /home/mariobeh/script-data/störungsbenachrichtigung/crontab.txt
+verzögerung = 5 # nur permanent-Modus: Pause zwischen Script-Ausführungen in Sekunden
