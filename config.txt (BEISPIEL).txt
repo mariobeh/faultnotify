@@ -9,14 +9,14 @@ bottoken = bot:token
 master_chat_id = chat-id
 
 [E-Mail]
-email_master = 
+email_master = deineemail@provider.de # (ssmtp.conf erforderlich) - oder serverintern
 
 [Geräte]
 IP01 = 172.16.1.27 Gerät 1
 IP02 = 172.16.0.233 Telefonanlage
 IP03 = 172.16.2.250 DNS-Server
 IP04 = 172.16.3.17 3D-Drucker
-IP05 = 
+IP05 = ...
 IP06 = 
 IP07 = 
 IP08 = 
@@ -40,6 +40,6 @@ IP25 =
 
 [Zeitplan]
 aktiv = 1 # Schalter: 0=nur manuell, 1=automatisch (Crontab), 2=permanent
-tage = 30 # x Tage wird eine erneute Meldung bei Daueroffline zurückgehalten
-crontab = * 6-22 * * * /srv/scripte/störungsbenachrichtigung.sh >> /home/mariobeh/script-data/störungsbenachrichtigung/crontab.txt
+tage = 30 # n Tage wird eine erneute Meldung bei Daueroffline zurückgehalten
+crontab = * 6-22 * * * /home/$USER/scripte/störungsbenachrichtigung.sh >> /home/$USER/script-data/störungsbenachrichtigung/crontab.txt
 verzögerung = 5 # nur permanent-Modus: Pause zwischen Script-Ausführungen in Sekunden
