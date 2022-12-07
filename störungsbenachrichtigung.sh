@@ -10,7 +10,7 @@ if [ ! -d "$data" ]; then
 fi
 
 # Updater & Reverse Updater BEGINN
-scriptversion=2204041139
+scriptversion=2211211708
 scriptname=störungsbenachrichtigung.sh
 serverping=public.mariobeh.de
 web_ver=https://public.mariobeh.de/prv/scripte/$scriptname-version.txt
@@ -40,7 +40,7 @@ if ping -w 1 -c 1 "$serverping" > /dev/null; then
 			exit
 		else
 			ipweb=$(host public.mariobeh.de | grep -w address | cut -d ' ' -f 4) # IP vom Mirror-Server
-			ipext=$(wget -qO - icanhazip.com) # IP vom Anschluss
+			ipext=$(wget -4qO - icanhazip.com) # IP vom Anschluss
 	
 			if [ "$user" = "mariobeh" ] && [ "$host" = "behserver" ] && [ "$ipweb" = "$ipext" ]; then
 				if [ ! -f "$int_ver" ]; then
