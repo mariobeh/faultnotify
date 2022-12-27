@@ -1,6 +1,6 @@
 (Linux Debian/Ubuntu)
 
-Die Störungsbenachrichtigung.sh kontrolliert bei Aufruf alle eingerichteten IP-Geräte, um den Online-Status sicherheitsrelevanter Geräte zu überwachen. Bis zu 25 Geräte. Crontab-Job (userbasiert) automatisch über das Script möglich.
+Die faultnotify.sh kontrolliert bei Aufruf alle eingerichteten IP-Geräte, um den Online-Status sicherheitsrelevanter Geräte zu überwachen. Bis zu 25 Geräte. Crontab-Job (userbasiert) automatisch über das Script möglich.
 
 Bei erstem Aufruf beginnt eine Art Wizard, der die Geräte einrichten lässt und benötigte Programme per sudo apt-get installiert. Es entsteht eine Config-File, die jederzeit manuell geändert werden kann.
 
