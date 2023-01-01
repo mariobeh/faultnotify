@@ -1,4 +1,4 @@
-(Linux Debian/Ubuntu)
+(Linux Debian/Ubuntu) - Terminal/Server
 
 Die faultnotify.sh kontrolliert bei Aufruf alle eingerichteten IP-Geräte, um den Online-Status sicherheitsrelevanter Geräte zu überwachen. Bis zu 25 Geräte. Crontab-Job (userbasiert) automatisch über das Script möglich.
 
