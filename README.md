@@ -1,19 +1,57 @@
-(Linux Debian/Ubuntu) - Terminal/Server
+# faultnotify (Debian / 07.25)
 
-Die faultnotify.sh kontrolliert bei Aufruf alle eingerichteten IP-Geräte, um den Online-Status sicherheitsrelevanter Geräte zu überwachen. Bis zu 25 Geräte. Crontab-Job (userbasiert) automatisch über das Script möglich.
+## Vorwort
 
-Bei erstem Aufruf beginnt eine Art Wizard, der die Geräte einrichten lässt und benötigte Programme per sudo apt-get installiert. Es entsteht eine Config-File, die jederzeit manuell geändert werden kann.
+`faultnotify.sh` ist ein modular aufgebautes Bash-Skript zur Überwachung von Geräten und Diensten in einem Netzwerk. Es erkennt Ausfälle zuverlässig und benachrichtigt wahlweise per E-Mail oder Telegram. Es richtet sich vor allem an Admins, die ihre Systeme ohne aufwendige Tools im Blick behalten wollen – ideal für headless Server oder embedded Systeme.
 
-Ist der Wizard abgeschlossen und die Config eingerichtet, werden beim Aufrufen des Bash-Scripts alle Geräte überprüft. Ist ein Gerät offline, erhält man eine Benachrichtigung. Diese erfolgt wahlweise per Telegram oder Email. Je nachdem ist die Einrichtigung eines Telegram-Bots erforderlich oder der Server muss in der Lage sein, eine Email zu versenden.
+## Hauptfunktionen
 
-Hierbei ist zu unterscheiden, ob das Gerät das erste Mal offline, dauerhaft offline, oder wieder online ist. Die Benachrichtigung erfolgt bei erstem Offline-Status und beim Wiederonline-Status. Im dauerhaftem Offline-Status ist die Benachrichtigung ausgesetzt.
+- Geräteprüfung via Ping oder Netcat (TCP/UDP)
+- Zwei-Stufen-Erkennung für Störungen (R1 → R2)
+- Wieder-Online-Erkennung mit automatischem Reset
+- Benachrichtigung per Telegram oder Mail mit Rückfallmechanismus
+- Dauerhafte Schleife (per `on`/`off` steuerbar) oder Einzeltest
+- Logfile-Erstellung im CSV-Format
 
-Es gibt 3 Modis. Der manuelle Aufruf-Modus ohne Crontab, der Crontab-Modus nach Belieben und der Permanent-Modus, der permanent das Script selbst aufruft. Im normalen Crontab-Modus mit maximal einem Aufruf pro Minute kann eine Unterbrechung eher verwirren als im Permanent-Modus. Letzteres ist aber ressourcenunfreundlich.
+## Aufbau und Einrichtung
 
-Mit integriertem Updater, der bei neuerer Version auf dem Server direkt die Bash-File mit der neuen automatisch ersetzt.
+Nach dem Aufruf mit `./faultnotify.sh install` wird ein geführter Installationsprozess gestartet:
 
-Alle mit diesem Bash-File zusammenhängende Config-Files werden ausgelagert nach /home/$Benutzer/script-data/störungsbenachrichtigung.
+- Abfrage der Benachrichtigungsmethode (Mail oder Telegram)
+- Versand eines Verifizierungscodes zur Bestätigung
+- Automatische Paketinstallation (`ssmtp`, `mailutils`, `curl`, `netcat-traditional`)
 
-Garantiert lauffähig auf Debian und Ubuntu und alle Zwischendistributionen (Xubuntu, Kubuntu, ...)
+Anschließend werden Geräte mit `./faultnotify.sh add` zur Überwachung hinzugefügt. Dabei werden Name, IP-Adresse, optional ein Port und ggf. das Protokoll (UDP) angegeben. Alle Daten landen strukturiert in `config.txt`.
 
-Nur in Deutsch verfügbar, Umbau auf anderen Sprachen auf Anfrage. Only available in German, conversion to other languages on request.
+## Nutzung und Bedienung
+
+- **Testlauf**: `./faultnotify.sh test` führt eine einmalige Prüfung aus.
+- **Automatikbetrieb**: Durch `./faultnotify.sh on` wird eine Endlosschleife aktiviert, `off` beendet sie.
+- **Modifikation**: Mit `./faultnotify.sh mod` lassen sich Einträge gezielt ändern oder löschen.
+- **Logik:**
+  - Offline-Erkennung durch zwei Ping-/Portprüfungen
+  - Wird ein Gerät zweimal in Folge als nicht erreichbar erkannt, wird es als gestört markiert (R1 → R2)
+  - Sobald es wieder erreichbar ist, erfolgt die Rückmeldung und die Jail-Datei wird gelöscht
+
+## Speicherort & Struktur
+
+Daten werden im Benutzerverzeichnis unter `/home/$USER/script-data/faultnotify.sh/` abgelegt. Dort befinden sich:
+
+- `config.txt` – Konfigurationsdatei inkl. Geräte
+- `jail/` – temporäre Markerdateien für gestörte Geräte
+- `logs/` – CSV-Logs aller Events
+
+## Sonstiges
+
+- Die Geräteliste wird automatisch durchnummeriert (ID001, ID002, …)
+- Einfache Migration alter Daten durch Update-Routinen
+- Updatefähig durch eigene Versionslogik (`scriptversion`)
+
+---
+
+*Nur in Deutsch verfügbar, Umbau auf andere Sprachen auf Anfrage. In diesem Falle werden alle Ausgaben (`echo`) in eine Sprachen-Datei extrahiert und es wird so ermöglicht, unbegrenzte Sprachen zu integrieren.*
+
+<br>
+
+**Vielen Dank,**  
+mariobeh
